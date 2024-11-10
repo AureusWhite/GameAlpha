@@ -1,0 +1,3 @@
+ public enum PawsColor {
+    RED, GREEN, YELLOW, PURPLE, BLUE, ORANGE, PINK, BLACK, WHITE, BROWN
+}
