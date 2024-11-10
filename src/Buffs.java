@@ -3,12 +3,11 @@ import java.util.HashMap;
 
 public class Buffs {
 
-    private final String type;  // Buff type name like "Smarter", "Faster"
-    private final String description;  // Buff description (optional)
-    private final int duration;  // How long the buff lasts (in game minutes)
+    private final String type;
+    private final String description;
+    private final int duration;  // Duration of the buff in minutes
     private final boolean isBuff;  // True if buff, false if debuff
 
-    // Store skill buffs in this map: e.g. Cognitive -> +2, Learning -> +1
     private HashMap<Skill, Integer> buffs = new HashMap<>();
     private static Buffs smarterBuff;
     private static Buffs fasterBuff;

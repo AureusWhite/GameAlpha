@@ -984,35 +984,35 @@ public class GameHandler {
                 }
             }
         }
-        assignFollower(fuzzy);
+        assignFuzzy(fuzzy);
         fuzzy.setRoom(Player.getRoom());
-        fuzzy.movePlayer("Hold Hands", snackArea);
     }
 
-    private void assignFollower(NPC requestingNPC) {
-        if (requestingNPC.getType().containsKey(NPCType.COMPANION)) {
+    private void assignFuzzy(NPC fuzzy) {
+        if (fuzzy.getType().containsKey(NPCType.COMPANION)) {
             String[] choices = {"Okay!", "No thanks.", "F*** off, crazy andriod"};
 
-            int choice = JOptionPane.showOptionDialog(null, "Would you like to be friends with " + requestingNPC.getName() + "?", "Friend Request", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
+            int choice = JOptionPane.showOptionDialog(null, "Would you like to be friends with " + fuzzy.getName() + "?", "Friend Request", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
             switch (choice) {
                 case 0 -> {
-                    Player.setHoldingNPC(requestingNPC);
-                    PlayerStatus.HOLDING_HANDS.activate();
-                    getGui().display("You are now friends with " + requestingNPC.getName(), "Black");
-                    updateAchievementsForNPC(requestingNPC, NPCStatus.FRIEND);
-
+                    getGui().display("You are now friends with " + fuzzy.getName(), "Black");
+                    updateAchievementsForNPC(fuzzy, NPCStatus.FRIEND);
+                    fuzzy.movePlayer("Hold Hands", snackArea);
+                    break;
                 }
                 case 1 -> {
-                    getGui().display("Awee, *Fuzzy looks a little sad* okay, well have fun doing things without fuzzy, I will be here if you need me." + requestingNPC.getName(), "Black");
+                    getGui().display("Awee, *Fuzzy looks a little sad* okay, well have fun doing things without fuzzy, I will be here if you need me." + fuzzy.getName(), "Black");
                     PlayerStatus.HOLDING_HANDS.deactivate();
                     PlayerStatus.CARRIED.deactivate();
                     Player.setHoldingNPC(null);
+                    break;
                 }
                 case 2 -> {
-                    getGui().display("Awee, *Fuzzy looks a little sad* okay, well have fun doing things without fuzzy, I will be here if you need me." + requestingNPC.getName(), "Black");
+                    getGui().display("Awee, *Fuzzy looks a little sad* okay, well have fun doing things without fuzzy, I will be here if you need me." + fuzzy.getName(), "Black");
                     PlayerStatus.HOLDING_HANDS.deactivate();
                     PlayerStatus.CARRIED.deactivate();
                     Player.setHoldingNPC(null);
+                    break;
                 }
             }
         }
@@ -1126,67 +1126,71 @@ public class GameHandler {
     }
 
     static String readFile(String fileName) {
-        // Use Paths to get a relative path to the 'resources' directory
-        File file = Paths.get(fileName.concat(".txt")).toFile();
+    // Get the base directory where the EXE or JAR is running
+    String baseDir = System.getProperty("user.dir");
 
-        if (file.exists()) {
-            try {
-                StringBuilder content = new StringBuilder();
-                StringBuilder section2 = new StringBuilder();
-                StringBuilder section3 = new StringBuilder();
-                StringBuilder section4 = new StringBuilder();
+    // Construct the path to the file within the 'resources' folder
+    File file = Paths.get(baseDir, "resources", fileName + ".txt").toFile();
 
-                try (FileReader reader = new FileReader(file)) {
-                    int character;
-                    int sectionCount = 1; // Track which section we're in
-                    while ((character = reader.read()) != -1) {
-                        if (character == '#') {
-                            sectionCount++; // Increment when we encounter a '#'
-                            continue; // Skip appending '#'
+    if (file.exists()) {
+        try {
+            StringBuilder content = new StringBuilder();
+            StringBuilder section2 = new StringBuilder();
+            StringBuilder section3 = new StringBuilder();
+            StringBuilder section4 = new StringBuilder();
+
+            try (FileReader reader = new FileReader(file)) {
+                int character;
+                int sectionCount = 1; // Track which section we're in
+                while ((character = reader.read()) != -1) {
+                    if (character == '#') {
+                        sectionCount++; // Increment when we encounter a '#'
+                        continue; // Skip appending '#'
+                    }
+
+                    // Append to content based on which section we're in
+                    switch (sectionCount) {
+                        case 1 ->
+                            content.append((char) character); // First section (before the first '#')
+                        case 2 ->
+                            section2.append((char) character); // Second section (between first and second '#')
+                        case 3 ->
+                            section3.append((char) character); // Third section (between second and third '#')
+                        case 4 ->
+                            section4.append((char) character); // Fourth section (between third and fourth '#')
+                        default -> {
                         }
-
-                        // Append to content based on which section we're in
-                        switch (sectionCount) {
-                            case 1 ->
-                                content.append((char) character); // First section (before the first '#')
-                            case 2 ->
-                                section2.append((char) character); // Second section (between first and second '#')
-                            case 3 ->
-                                section3.append((char) character); // Third section (between second and third '#')
-                            case 4 ->
-                                section4.append((char) character); // Fourth section (between third and fourth '#')
-                            default -> {
-                            }
-                        }
-                    }
-
-                    // Display the sections
-                    if (!content.isEmpty()) {
-                        getGui().display(content.toString(), "Black");
-                    } // Display everything before first '#'
-                    if (section2.length() > 0) {
-                        fileSection2 = section2.toString(); // Display second section
-                    }
-                    if (section3.length() > 0) {
-                        fileSection3 = section3.toString();
-                    }
-                    if (section4.length() > 0) {
-                        fileSection4 = section4.toString();
                     }
                 }
-                return content.toString(); // Return the content before first '#'
-            } catch (IOException e) {
-                getGui().display("Error reading file.", "Red");
+
+                // Display the sections
+                if (!content.isEmpty()) {
+                    getGui().display(content.toString(), "Black");
+                } // Display everything before first '#'
+                if (section2.length() > 0) {
+                    fileSection2 = section2.toString(); // Display second section
+                }
+                if (section3.length() > 0) {
+                    fileSection3 = section3.toString();
+                }
+                if (section4.length() > 0) {
+                    fileSection4 = section4.toString();
+                }
             }
-        } else {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                getGui().display("Error creating file.", "Red");
-            }
+            return content.toString(); // Return the content before first '#'
+        } catch (IOException e) {
+            getGui().display("Error reading file.", "Red");
         }
-        return null;
+    } else {
+        try {
+            file.getParentFile().mkdirs(); // Create directories if they don’t exist
+            file.createNewFile(); // Create the file if it doesn’t exist
+        } catch (IOException e) {
+            getGui().display("Error creating file.", "Red");
+        }
     }
+    return null;
+}
 
     private void explainCharacterBio() {
         readFile("characterBio");
@@ -1837,6 +1841,25 @@ public class GameHandler {
             if (item instanceof Furniture furniture) {
                 if (furniture.getName().equalsIgnoreCase(argument)) {
                     return furniture;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String[] getRoomNames() {
+        ArrayList<String> roomNames = new ArrayList<>();
+        for(Room room : rooms.values()) {
+            roomNames.add(room.getName());
+        }
+        return roomNames.toArray(new String[0]);
+    }
+
+    public static EatingAndFood getFoodByName(String selectedFood) {
+        for (Item item : items.values()) {
+            if (item instanceof EatingAndFood food) {
+                if (food.getName().equalsIgnoreCase(selectedFood)) {
+                    return food;
                 }
             }
         }

@@ -202,6 +202,79 @@ public class GUI extends JFrame {
         equipmentButton.setBorder(new LineBorder(Color.BLACK, 2));
 
         // Add action listeners to buttons
+        extraButton.addActionListener(e-> {
+            if (!locked) {
+                synchronized (this) {
+                    notify();
+                    String[] extras = {"Go To", "Eat", "Drink", "Read","Play"};
+                    String selectedExtra = (String) JOptionPane.showInputDialog(
+                            null,
+                            "What do you want to do?",
+                            "Extra",
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            extras,
+                            extras[0]
+                    );
+                    if (selectedExtra != null) {
+                        switch (selectedExtra) {
+                            case "Go To" -> {
+                                String[] rooms = GameHandler.getRoomNames();
+                                for (int i = 0; i < rooms.length; i++) {
+                                    rooms[i] = rooms[i].replace("_", " ");
+                                }
+                                String selectedRoom = (String) JOptionPane.showInputDialog(
+                                        null,
+                                        "Where do you want to go?",
+                                        "Go To",
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        null,
+                                        rooms,
+                                        rooms[0]
+                                );
+                                if (selectedRoom != null) {
+                                    Room room = GameHandler.getRoomByName(selectedRoom.replace(" ", "_"));
+                                    GameHandler.getGui().display("You go to the " + selectedRoom + ".", "Black");
+                                    Player.setRoom(room);
+                                    Player.getRoom().randomNPC(false).noticePlayer();
+                                } else {
+                                    notify();
+                                }
+                            }
+                            case "Eat" -> {
+                                String[] food = Player.getFoodChoices();
+                                if (food.length == 0) {
+                                    GameHandler.getGui().display("There is no food in this room", "Black");
+                                    return;
+                                }
+                                for (int i = 0; i < food.length; i++) {
+                                    food[i] = food[i].replace("_", " ");
+                                }
+                                String selectedFood = (String) JOptionPane.showInputDialog(
+                                        null,
+                                        "What do you want to eat?",
+                                        "Eat",
+                                        JOptionPane.QUESTION_MESSAGE,
+                                        null,
+                                        food,
+                                        food[0]
+                                );
+                                if (selectedFood != null) {
+                                    EatingAndFood food1 = GameHandler.getFoodByName(selectedFood);
+                                    food1.use();
+                                } else {
+                                    GameHandler.getGui().display("You have nothing to eat", "Black");
+                                    notify();
+                                }
+                            }
+                        }
+                    } else {
+                        notify();
+                    }
+                }
+            }
+            updateSidePanels();
+        });
         moveButton.addActionListener(e -> {
             if (!locked) {
                 synchronized (this) {

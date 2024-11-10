@@ -1598,4 +1598,36 @@ maturity += tempINT;
         }
 	}
 
+    public static String[] getFoodChoices() {
+        int i = 0;
+        String[] items = new String[backpack.size()];
+        for (Item item : backpack) {
+            if (item.getTypes().containsKey(ItemType.FOOD) || item.getTypes().containsKey(ItemType.DRINK)) {
+                items[i] = item.getName();
+                i++;
+            } else {
+                GameHandler.getGui().display("You have no food in your backpack", "Black");
+            }
+        }
+        for (Item item : pockets) {
+            if (item.getTypes().containsKey(ItemType.FOOD) || item.getTypes().containsKey(ItemType.DRINK)) {
+                items[i] = item.getName();
+                i++;
+            } else {
+                GameHandler.getGui().display("You have no food in your pockets", "Black");
+            }
+        }
+        for (Item item : hands) {
+            if (item.getTypes().containsKey(ItemType.FOOD) || item.getTypes().containsKey(ItemType.DRINK)) {
+                items[i] = item.getName();
+                i++;
+            } else {
+                GameHandler.getGui().display("You have no food in your hands", "Black");
+            }
+        }
+        
+        return items;
+
+    }
+
 }

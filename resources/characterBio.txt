@@ -1,0 +1,47 @@
+<h1>Choose Your Name</h1>
+<p>You get to decide what people call you—pick any name you like!</p>
+
+<h2>Age and Stats</h2>
+<p>Your age is super important in the game! It affects your stats, abilities, and how much freedom you get. There are three main stages you can be in:</p>
+
+<h3>Ages 2-4: Preschoolers</h3>
+<ul>
+  <li>At this stage, your stats and abilities are the lowest, but so are your responsibilities.</li>
+  <li>There’s not much testing, and it’s easy to pass!</li>
+  <li>You’ll have the most free time to play, but there won’t be a lot of choices for activities.</li>
+</ul>
+
+<h3>Ages 5-7: The Middle Group</h3>
+<ul>
+  <li>You’re getting stronger and smarter here.</li>
+  <li>You still don’t have a lot of responsibilities, but you’ve got more freedom than younger kids.</li>
+  <li>You can do more things, but it’s all about finding the right balance.</li>
+</ul>
+
+<h3>Ages 8-12: Older Rejuves</h3>
+<ul>
+  <li>This is the closest the game gets to 'hard mode.'</li>
+  <li>You have the most freedom, but you also have the most responsibilities, like helping care for younger rejuves.</li>
+  <li>You’ll need to be smart with your time, and good social skills are key to getting things done.</li>
+</ul>
+
+    <div class="container">
+        <h1>Pronouns in the Game</h1>
+        <p>In this game, you'll choose pronouns for your character. Pronouns are the words we use when we talk about someone without using their name. There are three main forms of pronouns:</p>
+        <ul>
+            <li><strong>Subjective</strong>: These pronouns are used when the character is the subject of a sentence (the one doing the action). Example: <em>They</em> are playing.</li>
+            <li><strong>Objective</strong>: These pronouns are used when the character is the object of a sentence (the one receiving the action). Example: The teacher called <em>them</em>.</li>
+            <li><strong>Possessive</strong>: These pronouns show ownership. Example: This is <em>their</em> book.</li>
+        </ul>
+        <p>Once you set your character's pronouns, the NPCs (non-player characters) will use them when interacting with or talking about you.</p>
+        <p>You can choose any pronouns you like! For example, some common pronouns are:</p>
+        <ul>
+            <li><strong>They/Them/Their</strong></li>
+            <li><strong>He/Him/His</strong></li>
+            <li><strong>She/Her/Hers</strong></li>
+            <li>Or you can create your own unique pronouns!</li>
+        </ul>
+
+        <h2>Term of Endearment</h2>
+        <p>After you pick pronouns, you'll also choose a <strong>term of endearment</strong>. This is a special, affectionate nickname that the NPCs will use for you. It can be anything you like—such as "Little Champ," "Princess," "Buddy," or something else personal and fun!</p>
+    </div>
